@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-  <a class="navbar-brand" href="#">Navbar > {{isCollapsed}}</a>
+  <a class="navbar-brand" routerLink="/">Navbar</a>
   <button class="navbar-toggler" type="button"  (click)="isCollapsed = !isCollapsed"
   [attr.aria-expanded]="!isCollapsed" aria-controls="navbarsExampleDefault">
     <span class="navbar-toggler-icon"></span>
@@ -19,7 +19,7 @@
       <li class="nav-item dropdown" ngbDropdown>
         <a class="nav-link dropdown-toggle" id="dropdown01" ngbDropdownToggle>Category</a>
         <div class="dropdown-menu" aria-labelledby="dropdown01" ngbDropdownMenu>
-          <a class="dropdown-item" href="#">Action</a>
+          <a class="dropdown-item" routerLink="/courses">Cursos</a>
           <a class="dropdown-item" href="#">Another action</a>
           <a class="dropdown-item" href="#">Something else here</a>
         </div>
