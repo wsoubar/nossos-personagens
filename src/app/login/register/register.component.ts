@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { AuthService } from './../../services/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
@@ -15,7 +16,9 @@ export class RegisterComponent implements OnInit {
     confirmPassword: '' 
   };
 
-  constructor(private auth: AuthService) { }
+  error: any = {};
+
+  constructor(private authService: AuthService, private router: Router) { }
 
   ngOnInit() {
   }
@@ -23,6 +26,22 @@ export class RegisterComponent implements OnInit {
   onSubmit() {
     console.log(this.userInfo);
     
+    if (this.validateForm(this.userInfo.email, this.userInfo.password)) {
+      this.authService.signUpWithEmail(this.userInfo.email, this.userInfo.password)
+        .then(() => {
+          this.router.navigate(['/'])
+        }).catch(_error => {
+          this.error = _error
+          console.log(_error);
+          this.router.navigate(['/register'])
+        })
+    }
+
+  }
+
+  validateForm(email: string, password: string): boolean {
+    // validate this.errorMessage
+    return true;
   }
 
 }

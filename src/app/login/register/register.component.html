@@ -1,11 +1,29 @@
 <form #register="ngForm" (ngSubmit)="onSubmit()" class="form-register" novalidate>
-    <h1 class="h3 mb-3 font-weight-normal">Crie sua conta</h1>
-    <label for="inputEmail" class="sr-only">E-mail</label>
-    <input type="email" id="email" name="email" class="form-control" [(ngModel)]="userInfo.email" placeholder="Email" required autofocus>
-    <label for="inputPassword" class="sr-only">Senha</label>
-    <input type="password" id="password" name="password" [(ngModel)]="userInfo.password" class="form-control" placeholder="Senha" required>
-    <label for="inputPassword" class="sr-only">Senha</label>
-    <input type="password" id="confirmPassword" name="confirmPassword" [(ngModel)]="userInfo.confirmPassword" class="form-control" placeholder="Confirmar senha" required>
-    <button class="btn btn-lg btn-primary btn-block" type="submit">Salvar</button>
-    <pre>{{ userInfo | json }}</pre>
+  <h1 class="h3 mb-3 font-weight-normal">Crie sua conta</h1>
+  <label for="inputEmail" class="sr-only">E-mail</label>
+  <input type="email" name="email" class="form-control" #email="ngModel" [(ngModel)]="userInfo.email" placeholder="Email" required
+    [email]="true" autofocus>
+  <div [hidden]="email.valid || email.pristine" class="alert alert-danger">
+    Email inválido
+  </div>
+  <label for="inputPassword" class="sr-only">Senha</label>
+  <input type="password" id="password" name="password" [(ngModel)]="userInfo.password" #password="ngModel" class="form-control"
+    placeholder="Senha" required>
+  <div [hidden]="password.valid || password.pristine" class="alert alert-danger">
+    Senha é obrigatório
+  </div>
+  <label for="inputPassword" class="sr-only">Senha</label>
+  <input type="password" id="confirmPassword" name="confirmPassword" #confirmPassword="ngModel" [(ngModel)]="userInfo.confirmPassword"
+    class="form-control" placeholder="Confirmar senha" required>
+  <div [hidden]="confirmPassword.valid || confirmPassword.pristine" class="alert alert-danger">
+    Confirmação da senha é obrigatório
+  </div>
+  <div [hidden]="confirmPassword.value == password.value" class="alert alert-danger">
+    Senha são diferentes
+  </div>
+  <div *ngIf="error.message" class="alert alert-danger">
+      {{error.message}}
+    </div>  
+  <button class="btn btn-lg btn-primary btn-block" type="submit">Salvar</button>
+  <!--pre>{{ userInfo | json }}</pre-->
 </form>
