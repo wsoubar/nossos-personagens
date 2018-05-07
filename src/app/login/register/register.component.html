@@ -1,0 +1,11 @@
+<form #register="ngForm" (ngSubmit)="onSubmit()" class="form-register" novalidate>
+    <h1 class="h3 mb-3 font-weight-normal">Crie sua conta</h1>
+    <label for="inputEmail" class="sr-only">E-mail</label>
+    <input type="email" id="email" name="email" class="form-control" [(ngModel)]="userInfo.email" placeholder="Email" required autofocus>
+    <label for="inputPassword" class="sr-only">Senha</label>
+    <input type="password" id="password" name="password" [(ngModel)]="userInfo.password" class="form-control" placeholder="Senha" required>
+    <label for="inputPassword" class="sr-only">Senha</label>
+    <input type="password" id="confirmPassword" name="confirmPassword" [(ngModel)]="userInfo.confirmPassword" class="form-control" placeholder="Confirmar senha" required>
+    <button class="btn btn-lg btn-primary btn-block" type="submit">Salvar</button>
+    <pre>{{ userInfo | json }}</pre>
+</form>

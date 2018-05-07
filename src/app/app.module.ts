@@ -1,6 +1,7 @@
 import { environment } from './../environments/environment';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { FormsModule }   from '@angular/forms';
 
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
@@ -15,13 +16,17 @@ import { CoursesListComponent } from './courses-list/courses-list.component';
 import { AppRoutingModule } from './app-routing.module';
 import { HomeComponent } from './home/home.component';
 import { AuthService } from './services/auth.service';
+import { LoginComponent } from './login/login/login.component';
+import { RegisterComponent } from './login/register/register.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     AppNavbarComponent,
     CoursesListComponent,
-    HomeComponent
+    HomeComponent,
+    LoginComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,
@@ -30,7 +35,8 @@ import { AuthService } from './services/auth.service';
     AngularFirestoreModule,
     AngularFireAuthModule,
     NgbModule.forRoot(),
-    AppRoutingModule
+    AppRoutingModule,
+    FormsModule      
   ],
   providers: [AuthService],
   bootstrap: [AppComponent]
