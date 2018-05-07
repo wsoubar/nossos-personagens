@@ -1,20 +1,25 @@
-<form [FormGroup]="form" (ngSubmit)="onSubmit()" class="form-register" novalidate>
+<form [formGroup]="form" (ngSubmit)="signUp()" class="form-register" novalidate>
   <h1 class="h3 mb-3 font-weight-normal">Crie sua conta</h1>
   <label for="inputEmail" class="sr-only">E-mail</label>
-  <input type="email" name="email" class="form-control" formControlName="email" placeholder="Email" required
-    [email]="true" autofocus>
+  <input type="email" class="form-control" formControlName="email" placeholder="Email" required autofocus>
+  <!--
   <div [hidden]="email.valid || email.pristine" class="alert alert-danger">
     Email inválido
   </div>
+-->
+  <div *ngIf="email.invalid && email.dirty" class="alert alert-danger">
+    Email inválido
+  </div>
   <label for="inputPassword" class="sr-only">Senha</label>
-  <input type="password" id="password" name="password" formControlName="password"  class="form-control"
-    placeholder="Senha" required>
-  <label for="inputPassword" class="sr-only">Senha</label>
-  <input type="password" id="confirm" name="confirm" formControlName="confirm"
-    class="form-control" placeholder="Confirmar senha" required>
+  <input type="password" formControlName="password" class="form-control" placeholder="Senha" required>
+  <div *ngIf="password.invalid && password.touched" class="alert alert-danger">
+    Senha deve estar entre 6 e 24 caracteres e ter letras e números
+  </div>
+  <label for="inputPassword" class="sr-only">Confirmação</label>
+  <input type="password" formControlName="confirm" class="form-control" placeholder="Confirmar senha" required>
   <div *ngIf="error.message" class="alert alert-danger">
-      {{error.message}}
-    </div>  
-  <button class="btn btn-lg btn-primary btn-block" [disable]="!isPasswordMatch()" type="submit">Salvar</button>
+    {{error.message}}
+  </div>
+  <button class="btn btn-lg btn-primary btn-block" [disabled]="!isPasswordMatch() && !form.valid" type="submit">Salvar</button>
   <!--pre>{{ userInfo | json }}</pre-->
 </form>
