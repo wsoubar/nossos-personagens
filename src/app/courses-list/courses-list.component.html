@@ -7,5 +7,6 @@
       <a href="{{course.url}}" target="_blank" class="btn btn-danger">Go to course</a>
     </ngb-alert>
   </div>
-  <pre>cursos: {{cursos}}</pre>
+  <pre>cursos: {{cursos | json}}</pre>
+  <pre>coursesObservable: {{ coursesObservable | async | json}}</pre>
 </ul>

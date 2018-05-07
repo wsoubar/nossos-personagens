@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 
 import { AngularFireDatabase } from 'angularfire2/database';
+import { AngularFirestore } from "angularfire2/firestore";
 import { Observable } from 'rxjs/Observable';
+import { Curso } from '../model/Curso';
 
 
 @Component({
@@ -11,22 +13,22 @@ import { Observable } from 'rxjs/Observable';
 })
 export class CoursesListComponent implements OnInit {
 
-  //coursesObservable: Observable<any []>;
-  cursos = [];
+  coursesObservable: Observable<any []>;
+  cursos= [];
 
-  constructor(private db: AngularFireDatabase) { }
+  constructor(private db: AngularFireDatabase, private afs: AngularFirestore) { }
 
   ngOnInit() {
-    //this.coursesObservable = this.getCourses('/cursos');
+    this.coursesObservable = this.getCourses('/cursos');
     this.getCursos('/cursos');
   }
 
-//  getCourses(listPath): Observable<any[]> {
-//    return this.db.list(listPath).valueChanges();
-//  }
+  getCourses(listPath): Observable<any[]> {
+    return this.afs.collection(listPath).valueChanges();
+  }
 
   getCursos(listPath) {
-    this.db.list(listPath).valueChanges().subscribe(data => {
+    this.afs.collection(listPath).valueChanges().subscribe(data => {
       console.log('Passou aqui');
       this.cursos = data;
       console.log(data);
