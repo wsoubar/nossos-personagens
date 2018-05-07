@@ -1,7 +1,7 @@
 import { Router } from '@angular/router';
 import { AuthService } from './../../services/auth.service';
 import { Component, OnInit } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { NgForm, FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-register',
@@ -10,33 +10,40 @@ import { NgForm } from '@angular/forms';
 })
 export class RegisterComponent implements OnInit {
 
-  userInfo = {
-    email: '',
-    password: '',
-    confirmPassword: '' 
-  };
+  form: FormGroup;
 
   error: any = {};
 
-  constructor(private authService: AuthService, private router: Router) { }
+  constructor(private authService: AuthService, 
+              private router: Router, 
+              private fb: FormBuilder) { 
+
+    this.form = this.fb.group({
+      email: ['', Validators.required],
+      password: ['', Validators.required],
+      conform: ['', Validators.required]
+    });
+  }
 
   ngOnInit() {
   }
 
-  onSubmit() {
-    console.log(this.userInfo);
-    
-    if (this.validateForm(this.userInfo.email, this.userInfo.password)) {
-      this.authService.signUpWithEmail(this.userInfo.email, this.userInfo.password)
-        .then(() => {
-          this.router.navigate(['/'])
-        }).catch(_error => {
-          this.error = _error
-          console.log(_error);
-          this.router.navigate(['/register'])
-        })
-    }
+  signUp() {
 
+    const val = this.form.value;
+    this.authService.signUpWithEmail(val.email, val.password)
+      .subscribe(
+        () => {
+          alert();
+        },
+        err => alert(err)
+      ); 
+
+  }
+
+  isPasswordMatch (): boolean {
+    const val = this.form.value;
+    return val && val.password && val.password == val.confirm;
   }
 
   validateForm(email: string, password: string): boolean {

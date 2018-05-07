@@ -1,7 +1,8 @@
+import { CoursesService } from './services/courses.service';
 import { environment } from './../environments/environment';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule }   from '@angular/forms';
+import { FormsModule, ReactiveFormsModule }   from '@angular/forms';
 
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
@@ -18,6 +19,12 @@ import { HomeComponent } from './home/home.component';
 import { AuthService } from './services/auth.service';
 import { LoginComponent } from './login/login/login.component';
 import { RegisterComponent } from './login/register/register.component';
+import 'rxjs/add/operator/do';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/take';
+import 'rxjs/add/operator/first';
+
+
 
 @NgModule({
   declarations: [
@@ -36,9 +43,10 @@ import { RegisterComponent } from './login/register/register.component';
     AngularFireAuthModule,
     NgbModule.forRoot(),
     AppRoutingModule,
-    FormsModule      
+    FormsModule,
+    ReactiveFormsModule
   ],
-  providers: [AuthService],
+  providers: [AuthService, CoursesService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

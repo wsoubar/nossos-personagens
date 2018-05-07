@@ -1,9 +1,10 @@
+import { CoursesService } from './../services/courses.service';
+import { Curso } from './../model/Curso';
 import { Component, OnInit } from '@angular/core';
 
 import { AngularFireDatabase } from 'angularfire2/database';
 import { AngularFirestore } from "angularfire2/firestore";
 import { Observable } from 'rxjs/Observable';
-import { Curso } from '../model/Curso';
 
 
 @Component({
@@ -13,26 +14,16 @@ import { Curso } from '../model/Curso';
 })
 export class CoursesListComponent implements OnInit {
 
-  coursesObservable: Observable<any []>;
-  cursos= [];
+  cursos$: Observable<Curso[]>;
 
-  constructor(private db: AngularFireDatabase, private afs: AngularFirestore) { }
+  constructor(private coursesService: CoursesService) { 
+
+  }
 
   ngOnInit() {
-    this.coursesObservable = this.getCourses('/cursos');
-    this.getCursos('/cursos');
+    this.cursos$ = this.coursesService.findAll$('/cursos');
+    this.cursos$.subscribe();
   }
 
-  getCourses(listPath): Observable<any[]> {
-    return this.afs.collection(listPath).valueChanges();
-  }
-
-  getCursos(listPath) {
-    this.afs.collection(listPath).valueChanges().subscribe(data => {
-      console.log('Passou aqui');
-      this.cursos = data;
-      console.log(data);
-    });
-  }
 
 }
