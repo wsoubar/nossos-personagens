@@ -7,6 +7,9 @@
     Email inválido
   </div>
 -->
+  <div *ngIf="email.errors.required && email.dirty" class="alert alert-danger">
+    Email é obrigatório
+  </div>
   <div *ngIf="email.invalid && email.dirty" class="alert alert-danger">
     Email inválido
   </div>
@@ -17,6 +20,9 @@
   </div>
   <label for="inputPassword" class="sr-only">Confirmação</label>
   <input type="password" formControlName="confirm" class="form-control" placeholder="Confirmar senha" required>
+  <div *ngIf="!isPasswordMatch() && confirm.dirty" class="alert alert-danger">
+    As senhas não conferem
+  </div>
   <div *ngIf="error.message" class="alert alert-danger">
     {{error.message}}
   </div>

@@ -1,3 +1,4 @@
+import { AuthService } from './../services/auth.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -7,11 +8,26 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AppNavbarComponent implements OnInit {
 
-  public isCollapsed = true;
+  isCollapsed = true;
+  user: any;
 
-  constructor() { }
+  constructor(private authService: AuthService) { 
+    this.user = this.authService.currentUser;
+   }
 
   ngOnInit() {
+  }
+
+  get authenticated():boolean {
+    return this.authService.authenticated;
+  }
+
+  get userName() : string {
+    return this.authService.currentUserDisplayName;
+  }
+
+  logout() {
+    return this.authService.logout();
   }
 
 }
