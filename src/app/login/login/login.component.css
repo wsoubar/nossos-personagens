@@ -45,6 +45,13 @@ body {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
-.form-signin .register-link {
+
+.reset-password {
   margin-top: 10px;
+  font-size: 80%;
+}
+
+.register-link {
+  margin-top: 10px;
+  font-size: 80%;
 }

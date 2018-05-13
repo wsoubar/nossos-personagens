@@ -1,3 +1,4 @@
+import { inject } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { AuthService } from './../../services/auth.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
@@ -12,13 +13,14 @@ export class LoginComponent implements OnInit {
 
   form: FormGroup;
   error: any = {};
+  resetPassword = false;
 
   constructor(private authService: AuthService,
               private fb: FormBuilder,
               private router: Router) { 
 
     this.form = this.fb.group({
-      'email': ['', Validators.required],
+      'email': ['', [Validators.required, Validators.email]],
       'password': ['', Validators.required]
     });
     
@@ -27,10 +29,32 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
   }
 
+  isValidMailFormat() : boolean{
+    return this.email.valid;
+  }
+
   login() {
     console.log('login');
+    //const val = this.form.value;
+    return this.authService.loginWithEmail(this.email.value, this.password.value);
+  }
+
+  sendResetEmail() {
     const val = this.form.value;
-    return this.authService.loginWithEmail(val.email, val.password);
+    //const email = val.email;
+    if (this.email.invalid) {
+      this.error = {message: 'Favor preencher o email corretamente!'}
+      return;
+    }
+    this.authService.resetPassword(this.email.value)
+      .then(sucesso => {
+        this.resetPassword = true;
+        this.error = {};
+        console.log('reset com sucesso');
+      })
+      .catch(_error => {
+        this.error = _error
+      });
   }
 
   get email() {
