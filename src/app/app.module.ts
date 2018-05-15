@@ -1,3 +1,4 @@
+import { AuthGuard } from './services/auth.guard';
 import { CoursesService } from './services/courses.service';
 import { environment } from './../environments/environment';
 import { BrowserModule } from '@angular/platform-browser';
@@ -46,7 +47,7 @@ import 'rxjs/add/operator/first';
     FormsModule,
     ReactiveFormsModule
   ],
-  providers: [AuthService, CoursesService],
+  providers: [AuthService, AuthGuard, CoursesService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
