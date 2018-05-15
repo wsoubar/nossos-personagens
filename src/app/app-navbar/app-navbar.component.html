@@ -7,16 +7,16 @@
   <div class="collapse navbar-collapse" id="navbarsExampleDefault" [ngbCollapse]="isCollapsed">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item">
-        <a class="nav-link" routerLink="/">Home</a>
+        <a class="nav-link" (click)="isCollapsed = true" routerLink="/">Home</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" routerLink="/courses">Cursos</a>
+        <a class="nav-link" (click)="isCollapsed = true" routerLink="/courses">Cursos</a>
       </li>
       <li class="nav-item" *ngIf="!authenticated">
-        <a class="nav-link" routerLink="/login">Login</a>
+        <a class="nav-link" (click)="isCollapsed = true" routerLink="/login">Login</a>
       </li>
       <li class="nav-item" *ngIf="authenticated">
-        <a class="nav-link" style="cursor: pointer;" (click)="logout()">Sair</a>
+        <a class="nav-link" (click)="isCollapsed = true" style="cursor: pointer;" (click)="logout()">Sair</a>
       </li>
     </ul>
     <!--

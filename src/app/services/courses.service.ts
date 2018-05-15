@@ -19,8 +19,8 @@ export class CoursesService {
       .map(actions => {
         return actions.map(a => {
           const data = a.payload.doc.data() as Curso;
-          const id = a.payload.doc.id;
-          return {id, ...data };
+          data.id = a.payload.doc.id;
+          return data;
         });
     });
   }

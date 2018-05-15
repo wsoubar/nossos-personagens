@@ -1,12 +1,11 @@
 <h3>Lista de Cursos</h3>
-<ul>
-  <div *ngFor="let curso of cursos$ | async">
-    <ngb-alert type="info" [dismissible]="false">
-      <h3><a href="{{curso.url}}">{{curso.titulo}}</a></h3>
-      <p>{{curso.descricao}}</p>
-      <p>ID: {{curso.id}}</p>
-      <a href="{{curso.url}}" target="_blank" class="btn btn-danger">Ir para o curso</a>
-    </ngb-alert>
+<div *ngFor="let curso of cursos$ | async">
+  <div class="alert alert-primary" role="alert">
+    <h3>
+      <a href="{{curso.url}}">{{curso.titulo}}</a>
+    </h3>
+    <p>{{curso.descricao}}</p>
+    <p>ID: {{curso.id}}</p>
+    <a href="{{curso.url}}" target="_blank" class="btn btn-danger">Ir para o curso</a>
   </div>
-  <!-- pre>{{ cursos$ | async | json }}</pre -->
-</ul>
+</div>

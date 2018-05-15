@@ -1,10 +1,8 @@
-export class Curso {
+export interface Curso {
 
-    constructor (
-        public id: string,
-        public titulo: string,
-        public descricao: string,
-        public url: string) {
-    }
+  id?: string;
+  titulo: string;
+  descricao: string;
+  url: string;
 
 }
