@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "public": "dist/ng6bs4fb",
+    "public": "dist/nossos-personagens",
     "ignore": [
       "firebase.json",
       "**/.*",
