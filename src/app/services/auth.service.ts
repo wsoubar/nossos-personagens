@@ -1,7 +1,9 @@
+import { Perfil } from './../model/perfil';
 import { Observable } from 'rxjs/Observable';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 
+import {AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument} from 'angularfire2/firestore';
 import { AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase/app';
 
@@ -13,24 +15,33 @@ export class AuthService {
 
   //  private authState: Observable<firebase.User>;
   private userDetails: firebase.User = null;
+  profile: Observable<Perfil>;
+  perfilCollection: AngularFirestoreCollection<Perfil>;
+  perfilDoc: AngularFirestoreDocument<Perfil>;
+  
 
-  constructor(private afAuth: AngularFireAuth, private router: Router) {
+  constructor(private afAuth: AngularFireAuth, 
+      private router: Router, 
+      private afs: AngularFirestore) {
     this.afAuth.authState.subscribe(
-      (user) => {
+      (user: firebase.User) => {
         if (user) {
           this.userDetails = user;
-          console.log('userDetails', this.userDetails);
+          //console.log('userDetails', this.userDetails);
         } else {
           this.userDetails = null;
         }
       }
     );
+
+    this.perfilCollection = this.afs.collection('perfil');  
   }
 
-  signUpWithEmail(email: string, password: string) {
+  signUpWithEmail(email: string, password: string, name: string) {
     return this.afAuth.auth.createUserWithEmailAndPassword(email, password)
-      .then((user) => {
-        this.userDetails = user
+      .then((user: firebase.User) => {
+        this.userDetails = user;
+        // create profile
       })
       .catch(error => {
         console.log(error)

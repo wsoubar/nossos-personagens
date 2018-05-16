@@ -1,16 +1,21 @@
 <form [formGroup]="form" (ngSubmit)="signUp()" class="form-register" novalidate>
   <h1 class="h3 mb-3 font-weight-normal">Crie sua conta</h1>
+  <label for="name" class="sr-only">Nome</label>
+  <input type="text" class="form-control" formControlName="name" aria-valuemin="3" aria-valuemax="16" placeholder="Nome" required autofocus>
+  <div *ngIf="name.invalid && name.touched" class="alert alert-danger">
+    Nome deve ter entre 3 e 16 caracteres
+  </div>
   <label for="inputEmail" class="sr-only">E-mail</label>
-  <input type="email" class="form-control" formControlName="email" placeholder="Email" required autofocus>
+  <input type="email" class="form-control" formControlName="email" placeholder="Email" required>
   <!--
   <div [hidden]="email.valid || email.pristine" class="alert alert-danger">
     Email inválido
   </div>
 -->
-  <div *ngIf="email.errors.required && email.dirty" class="alert alert-danger">
+  <div *ngIf="email.errors && email.errors.required && email.dirty" class="alert alert-danger">
     Email é obrigatório
   </div>
-  <div *ngIf="email.invalid && email.dirty" class="alert alert-danger">
+  <div *ngIf="email?.invalid && email?.dirty" class="alert alert-danger">
     Email inválido
   </div>
   <label for="inputPassword" class="sr-only">Senha</label>

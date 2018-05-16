@@ -11,9 +11,16 @@ body {
   }
 
 .ng-valid[required], .ng-valid.required  {
-  border-left: 5px solid #42A948; /* green */
+  border-left: 3px solid #42A948; /* green */
 }
 
 .ng-invalid:not(form)  {
-  border-left: 5px solid #a94442; /* red */
+  border-left: 3px solid #a94442; /* red */
 }  
+
+/*
+    "angularfire2": "^5.0.0-rc.6.0",
+    "bootstrap": "^4.1.1",
+    "core-js": "^2.5.4",
+    "firebase": "^4.13.1",
+*/

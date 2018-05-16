@@ -18,6 +18,12 @@ export class RegisterComponent implements OnInit {
               private fb: FormBuilder) { 
 
     this.form = this.fb.group({
+      'name': ['', [
+        Validators.minLength(3),
+        Validators.maxLength(16),
+        Validators.required
+        ]
+      ], 
       'email': ['', [
         Validators.required, 
         Validators.email
@@ -40,7 +46,7 @@ export class RegisterComponent implements OnInit {
   signUp() {
 
     const val = this.form.value;
-    this.authService.signUpWithEmail(val.email, val.password)
+    this.authService.signUpWithEmail(val.email, val.password, val.name)
       .then(user => {
         console.log('user', user)
       })
@@ -61,6 +67,7 @@ export class RegisterComponent implements OnInit {
     return true;
   }
 
+  get name() { return this.form.get('name') }
   get email() { return this.form.get('email') }
   get password() { return this.form.get('password') }
   get confirm() { return this.form.get('confirm') }
