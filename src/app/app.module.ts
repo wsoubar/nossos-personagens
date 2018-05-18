@@ -1,3 +1,4 @@
+import { PersonagemService } from './services/personagem.service';
 import { AuthGuard } from './services/auth.guard';
 import { CoursesService } from './services/courses.service';
 import { environment } from './../environments/environment';
@@ -20,6 +21,7 @@ import { HomeComponent } from './home/home.component';
 import { AuthService } from './services/auth.service';
 import { LoginComponent } from './login/login/login.component';
 import { RegisterComponent } from './login/register/register.component';
+import { ListarPersonagemComponent } from './personagem/listar-personagem/listar-personagem.component';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/take';
@@ -34,7 +36,8 @@ import 'rxjs/add/operator/first';
     CoursesListComponent,
     HomeComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    ListarPersonagemComponent
   ],
   imports: [
     BrowserModule,
@@ -47,7 +50,7 @@ import 'rxjs/add/operator/first';
     FormsModule,
     ReactiveFormsModule
   ],
-  providers: [AuthService, AuthGuard, CoursesService],
+  providers: [AuthService, AuthGuard, PersonagemService, CoursesService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

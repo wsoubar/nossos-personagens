@@ -15,10 +15,15 @@ export class AuthService {
 
   //  private authState: Observable<firebase.User>;
   private userDetails: firebase.User = null;
-  profile: Observable<Perfil>;
+  perfis: Observable<Perfil[]>;
   perfilCollection: AngularFirestoreCollection<Perfil>;
   perfilDoc: AngularFirestoreDocument<Perfil>;
-  
+  /*
+  novoPerfil: Perfil = {
+    nome: '',
+    foto: null
+  };  
+*/
 
   constructor(private afAuth: AngularFireAuth, 
       private router: Router, 
@@ -38,10 +43,16 @@ export class AuthService {
   }
 
   signUpWithEmail(email: string, password: string, name: string) {
+    let np = new Perfil();
+    np.nome = name;
+    np.foto = null;
     return this.afAuth.auth.createUserWithEmailAndPassword(email, password)
       .then((user: firebase.User) => {
         this.userDetails = user;
-        // create profile
+        this.afAuth.authState.subscribe(user=>{
+          //console.log('user authstate subscribe', user);
+          this.afs.doc<Perfil>(`perfil/${user.uid}`).set({nome: np.nome, foto: np.foto});
+        });
       })
       .catch(error => {
         console.log(error)

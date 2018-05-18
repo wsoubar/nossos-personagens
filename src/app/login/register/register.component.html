@@ -21,7 +21,7 @@
   <label for="inputPassword" class="sr-only">Senha</label>
   <input type="password" formControlName="password" class="form-control" placeholder="Senha" required>
   <div *ngIf="password.invalid && password.touched" class="alert alert-danger">
-    Senha deve estar entre 6 e 24 caracteres e ter letras e números
+    Senha deve ter entre 6 e 25 caracteres
   </div>
   <label for="inputPassword" class="sr-only">Confirmação</label>
   <input type="password" formControlName="confirm" class="form-control" placeholder="Confirmar senha" required>

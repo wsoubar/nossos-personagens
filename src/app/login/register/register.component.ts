@@ -17,6 +17,8 @@ export class RegisterComponent implements OnInit {
               private router: Router, 
               private fb: FormBuilder) { 
 
+    //         Validators.pattern('^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$'),
+
     this.form = this.fb.group({
       'name': ['', [
         Validators.minLength(3),
@@ -30,7 +32,6 @@ export class RegisterComponent implements OnInit {
         ]
       ],
       'password': ['', [
-        Validators.pattern('^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$'),
         Validators.minLength(6),
         Validators.maxLength(25),
         Validators.required

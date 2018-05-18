@@ -1,3 +1,4 @@
+import { ListarPersonagemComponent } from './personagem/listar-personagem/listar-personagem.component';
 import { AuthGuard } from './services/auth.guard';
 import { RegisterComponent } from './login/register/register.component';
 import { LoginComponent } from './login/login/login.component';
@@ -11,6 +12,7 @@ const routes: Routes = [
   { path: 'courses', component: CoursesListComponent, canActivate: [AuthGuard] },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
+  { path: 'listarPersonagens', component: ListarPersonagemComponent }
 ];
 
 @NgModule({
