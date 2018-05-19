@@ -1,7 +1,7 @@
+import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { PersonagemService } from './../../services/personagem.service';
 import { Component, OnInit } from '@angular/core';
-import { Observable } from '@firebase/util';
 import { Personagem } from '../../model/personagem';
 
 @Component({
@@ -11,16 +11,21 @@ import { Personagem } from '../../model/personagem';
 })
 export class ListarPersonagemComponent implements OnInit {
 
+  //personagens$: Observable<Personagem[]>;
   personagens: Personagem[];
 
   constructor(private personagemServ: PersonagemService,
-              private router: Router) { }
+    private router: Router) {
+
+  }
 
   ngOnInit() {
-    this.personagemServ.getPersonagens().subscribe(personagens=> {
-      this.personagens = personagens;
-      console.log('lenght', this.personagens.length);
-    });
+    //this.personagens$ = this.personagemServ.getPersonagens$();
+    this.personagemServ.getPersonagens$().subscribe(
+      personagens => {
+        this.personagens = personagens;
+        console.log;
+      });
   }
 
 }

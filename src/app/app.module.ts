@@ -26,6 +26,7 @@ import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/take';
 import 'rxjs/add/operator/first';
+import { CommonModule } from '@angular/common';
 
 
 
@@ -48,7 +49,8 @@ import 'rxjs/add/operator/first';
     NgbModule.forRoot(),
     AppRoutingModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    CommonModule
   ],
   providers: [AuthService, AuthGuard, PersonagemService, CoursesService],
   bootstrap: [AppComponent]

@@ -8,14 +8,16 @@ import { Injectable } from '@angular/core';
 })
 export class PersonagemService {
 
-  personagens: Observable<Personagem[]>;
+  //personagens: Observable<Personagem[]>;
   personagemColl: AngularFirestoreCollection<Personagem>;
   personagemDoc: AngularFirestoreDocument<Personagem>;
 
   constructor(private afs: AngularFirestore) { 
     this.personagemColl = this.afs.collection('personagem', ref=> ref.orderBy('nome', 'asc'));
+  }
 
-    this.personagens = this.personagemColl.snapshotChanges().map(changes=> {
+  getPersonagens$(): Observable<Personagem[]> {
+    return this.personagemColl.snapshotChanges().map(changes=> {
       return changes.map(p => {
         const data = p.payload.doc.data() as Personagem;
         data.id = p.payload.doc.id;
@@ -24,8 +26,8 @@ export class PersonagemService {
     });
   }
 
-  getPersonagens() {
-    return this.personagens;
+  getPersonagensCollection() {
+    return this.personagemColl; 
   }
 
   addPersonagem(personagem: Personagem) {
