@@ -22,7 +22,7 @@ export class CoursesService {
           data.id = a.payload.doc.id;
           return data;
         });
-    });
+      });
   }
 
   findByID(id: string): Observable<Curso> {

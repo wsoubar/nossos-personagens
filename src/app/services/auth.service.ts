@@ -3,9 +3,11 @@ import { Observable } from 'rxjs/Observable';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 
-import {AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument} from 'angularfire2/firestore';
+import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from 'angularfire2/firestore';
 import { AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase/app';
+import 'rxjs/add/operator/switchMap';
+import { map } from 'rxjs/operators';
 
 
 @Injectable({
@@ -14,10 +16,13 @@ import * as firebase from 'firebase/app';
 export class AuthService {
 
   //  private authState: Observable<firebase.User>;
-  private userDetails: firebase.User = null;
-  perfis: Observable<Perfil[]>;
-  perfilCollection: AngularFirestoreCollection<Perfil>;
-  perfilDoc: AngularFirestoreDocument<Perfil>;
+  userDetails: firebase.User = null;
+  perfil$: Observable<Perfil>;
+  perfil: Perfil;
+
+  //perfis: Observable<Perfil[]>;
+  //perfilCollection: AngularFirestoreCollection<Perfil>;
+  //perfilDoc: AngularFirestoreDocument<Perfil>;
   /*
   novoPerfil: Perfil = {
     nome: '',
@@ -25,12 +30,15 @@ export class AuthService {
   };  
 */
 
-  constructor(private afAuth: AngularFireAuth, 
-      private router: Router, 
-      private afs: AngularFirestore) {
+  constructor(private afAuth: AngularFireAuth,
+    private router: Router,
+    private afs: AngularFirestore) {
+
+    //this.perfilCollection = this.afs.collection('perfil');
     this.afAuth.authState.subscribe(
       (user: firebase.User) => {
         if (user) {
+          //getPerfil(user.uid);
           this.userDetails = user;
           //console.log('userDetails', this.userDetails);
         } else {
@@ -39,19 +47,28 @@ export class AuthService {
       }
     );
 
-    this.perfilCollection = this.afs.collection('perfil');  
+    this.perfil$ = this.afAuth.authState
+      .switchMap(user => {
+        if (user) {
+          return this.afs.doc<Perfil>(`perfil/${user.uid}`).snapshotChanges()
+            .map(a => {
+              const data = a.payload.data() as Perfil;
+              data.id = a.payload.id;
+              return data;
+            });
+        }
+      });
   }
 
   signUpWithEmail(email: string, password: string, name: string) {
-    let np = new Perfil();
-    np.nome = name;
-    np.foto = null;
+    let p = { nome: name, email: email, foto: null };
+
     return this.afAuth.auth.createUserWithEmailAndPassword(email, password)
       .then((user: firebase.User) => {
         this.userDetails = user;
-        this.afAuth.authState.subscribe(user=>{
+        this.afAuth.authState.subscribe(user => {
           //console.log('user authstate subscribe', user);
-          this.afs.doc<Perfil>(`perfil/${user.uid}`).set({nome: np.nome, foto: np.foto});
+          this.afs.doc(`perfil/${user.uid}`).set({ nome: p.nome, foto: p.foto, email: p.email }, { merge: true });
         });
       })
       .catch(error => {
@@ -62,8 +79,10 @@ export class AuthService {
 
   loginWithEmail(email: string, password: string) {
     return this.afAuth.auth.signInWithEmailAndPassword(email, password)
-      .then((user) => {
+      .then(user => {
         this.userDetails = user;
+        this.perfil$ = this.afs.doc<Perfil>(`items/${user.uid}`).valueChanges();
+        //this.perfil.subscribe(perf=>console.log(perf));
         this.router.navigate(['/'])
       })
       .catch(error => {
@@ -83,25 +102,21 @@ export class AuthService {
     return this.userDetails !== null;
   }
 
-  // Anonymous User
-  get currentUserAnonymous(): boolean {
-    return this.authenticated ? this.userDetails.isAnonymous : false
+  getPerfil(userid): AngularFirestoreDocument<Perfil> {
+    //this.afs.collection('perfil').doc(userid).snapshotChanges().map(
+    return null;
   }
-  get currentUserDisplayName(): string {
-    if (!this.userDetails) { return 'Guest' }
-    else if (this.currentUserAnonymous) { return 'Anonymous' }
-    else { return this.userDetails['displayName'] || 'User without a Name' }
-  }
-  
+
   // Returns current user data
   get currentUser(): any {
     return this.authenticated ? this.userDetails : null;
   }
-  
+
   // Returns
   get currentUserObservable(): any {
     return this.afAuth.authState
   }
+
   logout() {
     this.afAuth.auth.signOut()
       .then((res) => this.router.navigate(['/']));

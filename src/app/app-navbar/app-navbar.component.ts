@@ -1,3 +1,4 @@
+import { Perfil } from './../model/perfil';
 import { AuthService } from './../services/auth.service';
 import { Component, OnInit } from '@angular/core';
 
@@ -10,20 +11,22 @@ export class AppNavbarComponent implements OnInit {
 
   isCollapsed = true;
   user: any;
+  perfil: Perfil;
 
-  constructor(private authService: AuthService) { 
+  constructor(private authService: AuthService) {
     this.user = this.authService.currentUser;
-   }
+    if (this.user) {
+      this.authService.perfil$.subscribe(perfil => {
+        this.perfil = perfil;
+      });
+    }
+  }
 
   ngOnInit() {
   }
 
-  get authenticated():boolean {
+  get authenticated(): boolean {
     return this.authService.authenticated;
-  }
-
-  get userName() : string {
-    return this.authService.currentUserDisplayName;
   }
 
   logout() {
