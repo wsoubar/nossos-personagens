@@ -18,7 +18,7 @@ export class AuthService {
   //  private authState: Observable<firebase.User>;
   userDetails: firebase.User = null;
   perfil$: Observable<Perfil>;
-  perfil: Perfil;
+  //perfil: Perfil;
 
   //perfis: Observable<Perfil[]>;
   //perfilCollection: AngularFirestoreCollection<Perfil>;
@@ -40,24 +40,21 @@ export class AuthService {
         if (user) {
           //getPerfil(user.uid);
           this.userDetails = user;
-          //console.log('userDetails', this.userDetails);
+          console.log('userDetails', this.userDetails.uid);
+          this.perfil$ = this.getPerfil(this.userDetails.uid);
         } else {
           this.userDetails = null;
+          this.perfil$ = null;
         }
       }
     );
-
+/*
     this.perfil$ = this.afAuth.authState
-      .switchMap(user => {
-        if (user) {
-          return this.afs.doc<Perfil>(`perfil/${user.uid}`).snapshotChanges()
-            .map(a => {
-              const data = a.payload.data() as Perfil;
-              data.id = a.payload.id;
-              return data;
-            });
-        }
+      .switchMap(user => { 
+        console.log('authService:this.perfil$', user);
+        return this.getPerfil(user.uid); 
       });
+*/
   }
 
   signUpWithEmail(email: string, password: string, name: string) {
@@ -81,8 +78,8 @@ export class AuthService {
     return this.afAuth.auth.signInWithEmailAndPassword(email, password)
       .then(user => {
         this.userDetails = user;
-        this.perfil$ = this.afs.doc<Perfil>(`items/${user.uid}`).valueChanges();
-        //this.perfil.subscribe(perf=>console.log(perf));
+        this.perfil$ = this.getPerfil(this.userDetails.uid);
+        this.perfil$.subscribe(perf=>console.log('loginWithEmail', perf));
         this.router.navigate(['/'])
       })
       .catch(error => {
@@ -102,9 +99,23 @@ export class AuthService {
     return this.userDetails !== null;
   }
 
-  getPerfil(userid): AngularFirestoreDocument<Perfil> {
+  private getPerfil(userid): Observable<Perfil> {
     //this.afs.collection('perfil').doc(userid).snapshotChanges().map(
-    return null;
+    return this.afAuth.authState
+    .switchMap(user => {
+      if (user) {
+        return this.afs.doc<Perfil>(`perfil/${user.uid}`).snapshotChanges()
+          .map(a => {
+            const data = a.payload.data() as Perfil;
+            data.id = a.payload.id;
+            return data;
+          });
+      }
+    });
+  }
+
+  get perfilLogado$(): Observable<Perfil> {
+    return this.getPerfil(this.userDetails.uid);
   }
 
   // Returns current user data

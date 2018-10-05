@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs';
 import { Perfil } from './../model/perfil';
 import { AuthService } from './../services/auth.service';
 import { Component, OnInit } from '@angular/core';
@@ -11,18 +12,14 @@ export class AppNavbarComponent implements OnInit {
 
   isCollapsed = true;
   user: any;
-  perfil: Perfil;
+  perfil$: Observable<Perfil>;
 
   constructor(private authService: AuthService) {
-    this.user = this.authService.currentUser;
-    if (this.user) {
-      this.authService.perfil$.subscribe(perfil => {
-        this.perfil = perfil;
-      });
-    }
+    this.perfil$ = this.authService.perfil$;
   }
 
   ngOnInit() {
+    this.perfil$.subscribe(p=> console.log('p', p));
   }
 
   get authenticated(): boolean {
